@@ -20,9 +20,9 @@ public class TokenService : ITokenService
     
     public async Task<string> GenerateToken(User user)
     {
-        var userDataBase = await _userRepository.GetUserById(user.Id);
+        var userDataBase = await _userRepository.GetUserByEmail(user.Email);
         
-        if(user.Name != userDataBase.Name && user.Name != userDataBase.Password) 
+        if(user.Email != userDataBase.Email || user.Password != userDataBase.Password) 
             return String.Empty;  
         
         var secretKey =  new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
@@ -36,7 +36,8 @@ public class TokenService : ITokenService
             audience: audience,
             claims: new[]
             {
-                new Claim(type: ClaimTypes.Name, value: user.Name),
+                new Claim(type: ClaimTypes.Name, value: userDataBase.Name),
+                new Claim(type: ClaimTypes.Email, value: userDataBase.Email),
             },
             expires: DateTime.Now.AddMinutes(30),
             signingCredentials: signingCredentials

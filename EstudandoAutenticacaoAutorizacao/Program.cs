@@ -1,6 +1,8 @@
 using EstudandoAutenticacaoAutorizacao.DataBase;
+using EstudandoAutenticacaoAutorizacao.Helper;
 using EstudandoAutenticacaoAutorizacao.Repository;
 using EstudandoAutenticacaoAutorizacao.Repository.Interface;
+using EstudandoAutenticacaoAutorizacao.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<ITokenService, TokenService>();
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddDbContext<Context>(
     options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")) );
