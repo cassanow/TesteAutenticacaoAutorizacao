@@ -1,12 +1,14 @@
 ﻿using EstudandoAutenticacaoAutorizacao.Model;
 using EstudandoAutenticacaoAutorizacao.Repository;
 using EstudandoAutenticacaoAutorizacao.Repository.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EstudandoAutenticacaoAutorizacao.Controller;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class UserController : Microsoft.AspNetCore.Mvc.Controller
 {
     private readonly IUserRepository _userRepository;
@@ -28,7 +30,7 @@ public class UserController : Microsoft.AspNetCore.Mvc.Controller
     [HttpPost("addUser")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task <IActionResult> AddUser(User user)
+    public async Task <IActionResult> AddUser([FromBody] User user)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);

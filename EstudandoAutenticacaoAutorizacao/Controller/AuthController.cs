@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EstudandoAutenticacaoAutorizacao.Controller;
 
+[ApiController]
+[Route("[controller]")]
 public class AuthController : Microsoft.AspNetCore.Mvc.Controller
 {
     private readonly ITokenService _tokenService;
@@ -28,6 +30,6 @@ public class AuthController : Microsoft.AspNetCore.Mvc.Controller
         if (token == null)
             return Unauthorized();
 
-        return Ok(new {Token = token});
+        return Ok(token);
     }
 }
